@@ -1,4 +1,5 @@
 # AutoCache
+![Tests](https://github.com/pypro485/autocache-python/actions/workflows/tests.yml/badge.svg)
 
 A lightweight and easy-to-use caching library for Python with support for automatic cache expiration.
 
