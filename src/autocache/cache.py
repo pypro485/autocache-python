@@ -27,7 +27,6 @@ def cache(func=None, *, expire=None):
                     state._hits += 1
                     return cached_value
 
-                # Cache expired
                 del state._cache[key]
 
             state._misses += 1
@@ -40,6 +39,18 @@ def cache(func=None, *, expire=None):
             )
 
             return result
+
+        def clear():
+            keys_to_remove = []
+
+            for key in state._cache:
+                if key[0] == f.__module__ and key[1] == f.__name__:
+                    keys_to_remove.append(key)
+
+            for key in keys_to_remove:
+                del state._cache[key]
+
+        wrapper.cache_clear = clear
 
         return wrapper
 
