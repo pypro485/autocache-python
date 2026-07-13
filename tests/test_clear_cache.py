@@ -9,13 +9,14 @@ def double(x):
     return x * 2
 
 
-def test_cache_prevents_second_execution():
+def test_clear_cache():
     global calls
 
     clear_cache()
     calls = 0
 
-    assert double(5) == 10
-    assert double(5) == 10
+    double(5)
+    clear_cache()
+    double(5)
 
-    assert calls == 1
+    assert calls == 2

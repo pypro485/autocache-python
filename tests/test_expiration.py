@@ -1,21 +1,26 @@
+import time
+
 from autocache import cache, clear_cache
 
 calls = 0
 
-@cache()
+@cache(expire=1)
 def double(x):
     global calls
     calls += 1
     return x * 2
 
 
-def test_cache_prevents_second_execution():
+def test_cache_expires():
     global calls
 
     clear_cache()
     calls = 0
 
-    assert double(5) == 10
-    assert double(5) == 10
+    double(5)
 
-    assert calls == 1
+    time.sleep(1.2)
+
+    double(5)
+
+    assert calls == 2
