@@ -1,4 +1,4 @@
-from autocache import cache, cache_info
+from autocache import cache, cache_info, clear_cache
 import time
 
 
@@ -12,5 +12,9 @@ def slow(x):
 print(slow(5))
 print(slow(5))
 print(slow(10))
+
+cache_info()
+
+clear_cache()
 
 cache_info()
