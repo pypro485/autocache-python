@@ -1,12 +1,15 @@
 from . import state
-
-
 def cache_info():
-    """
-    Display cache entires, hits, and misses.
-    """
+    info = {
+        "entries": len(state._cache),
+        "hits": state._hits,
+        "misses": state._misses,
+    }
+
     print("Autocache")
     print("----------------")
-    print(f"Entries: {len(state._cache)}")
-    print(f"Hits: {state._hits}")
-    print(f"Misses: {state._misses}")
+    print(f"Entries: {info['entries']}")
+    print(f"Hits: {info['hits']}")
+    print(f"Misses: {info['misses']}")
+
+    return info
