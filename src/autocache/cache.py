@@ -1,28 +1,42 @@
 import functools
+import time
 from . import state
 
 
-def cache(func):
+def cache(expire=None):
 
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    def decorator(func):
 
-        key = (
-            func.__name__,
-            args,
-            tuple(sorted(kwargs.items()))
-        )
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
 
-        if key in state._cache:
-            state._hits += 1
-            return state._cache[key]
+            key = (
+                func.__name__,
+                args,
+                tuple(sorted(kwargs.items()))
+            )
 
-        state._misses += 1
+            if key in state._cache:
+                cached_value, created_time = state._cache[key]
 
-        result = func(*args, **kwargs)
+                if expire is None or (time.time() - created_time) < expire:
+                    state._hits += 1
+                    return cached_value
 
-        state._cache[key] = result
+                # Cache expired
+                del state._cache[key]
 
-        return result
+            state._misses += 1
 
-    return wrapper
+            result = func(*args, **kwargs)
+
+            state._cache[key] = (
+                result,
+                time.time()
+            )
+
+            return result
+
+        return wrapper
+
+    return decorator

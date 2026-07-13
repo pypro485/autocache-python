@@ -1,8 +1,8 @@
-from autocache import cache, cache_info, clear_cache
 import time
+from autocache import cache
 
 
-@cache
+@cache(expire=5)
 def slow(x):
     print("Running function...")
     time.sleep(2)
@@ -11,10 +11,7 @@ def slow(x):
 
 print(slow(5))
 print(slow(5))
-print(slow(10))
 
-cache_info()
+time.sleep(6)
 
-clear_cache()
-
-cache_info()
+print(slow(5))
