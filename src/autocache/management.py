@@ -1,9 +1,12 @@
 from . import state
+from .utils import make_key
+
 
 def clear_cache():
     """
-    Clear all cached entries and reset hit/miss counters.
+    Remove all cached values and reset statistics.
     """
+
     state._cache.clear()
     state._hits = 0
     state._misses = 0
@@ -11,14 +14,10 @@ def clear_cache():
 
 def cache_remove(func, *args, **kwargs):
     """
-    Remove a specific cache entry for a given function and its arguments.
+    Remove one specific cached function result.
     """
-    key = (
-        func.__name__,
-        args,
-        tuple(sorted(kwargs.items()))
-        )
+
+    key = make_key(func, args, kwargs)
 
     if key in state._cache:
         del state._cache[key]
-
