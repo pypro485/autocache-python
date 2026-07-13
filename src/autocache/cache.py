@@ -3,22 +3,21 @@ import time
 from . import state
 
 
-def cache(expire=None):
+def cache(func=None, *, expire=None):
     """
-    Cache function results in memory with an optional expiration time.
+    Cache function results in memory with optional expiration.
 
     Args:
-    expire (float, optional): The time in seconds after which the cache entry will expire. 
-                                  If None, the cache entry will not expire.
+        func: The function being decorated.
+        expire (float, optional): Seconds before cached values expire.
+            If None, values never expire.
     """
 
-    def decorator(func):
-
-        @functools.wraps(func)
+    def decorator(f):
+        @functools.wraps(f)
         def wrapper(*args, **kwargs):
-
             key = (
-                func.__name__,
+                f.__name__,
                 args,
                 tuple(sorted(kwargs.items()))
             )
@@ -34,16 +33,15 @@ def cache(expire=None):
                 del state._cache[key]
 
             state._misses += 1
-
-            result = func(*args, **kwargs)
-
-            state._cache[key] = (
-                result,
-                time.time()
-            )
-
+            result = f(*args, **kwargs)
+            state._cache[key] = (result, time.time())
             return result
 
         return wrapper
 
+    # Case 1: Used without parentheses -> @cache
+    if func is not None and callable(func):
+        return decorator(func)
+
+    # Case 2: Used with parentheses -> @cache() or @cache(expire=60)
     return decorator
