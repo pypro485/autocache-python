@@ -7,3 +7,4 @@ name = "autocache"
 version = "0.1.0"
 description = "A lightweight Python caching library"
 requires-python = ">=3.9"
+license = { file = "LICENSE" }

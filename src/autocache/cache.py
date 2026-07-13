@@ -4,6 +4,13 @@ from . import state
 
 
 def cache(expire=None):
+    """
+    Cache function results in memory with an optional expiration time.
+
+    Args:
+    expire (float, optional): The time in seconds after which the cache entry will expire. 
+                                  If None, the cache entry will not expire.
+    """
 
     def decorator(func):
 
