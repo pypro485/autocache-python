@@ -89,7 +89,7 @@ clear_cache()
 - [x] Cache expiration
 - [x] Cache statistics
 - [x] Clear cache
-- [ ] Support both `@cache` and `@cache(...)`
+- [x] Support both `@cache` and `@cache(...)`
 - [ ] Maximum cache size
 - [ ] Disk caching
 - [ ] Async support
